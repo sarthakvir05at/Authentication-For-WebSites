@@ -2,6 +2,7 @@ const express= require('express');
 const bodyParser= require('body-parser');
 const ejs= require('ejs');
 const mongoose= require('mongoose');
+const encrypt= require('mongoose-encryption');
 
 const app= express();
 
@@ -15,6 +16,11 @@ const userSchema= new mongoose.Schema({
     email: String,
     password: String
 });
+
+// Adding auth by encrypting our password with a key of secret which can be any string
+
+const secret= "I Am Sherlock Holmes And Upto A Murder Mystery";
+userSchema.plugin(encrypt, { secret, encryptedFields: ["password"] });
 
 const User= new mongoose.model("User", userSchema);
 
