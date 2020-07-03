@@ -29,11 +29,12 @@ app.use(passport.session());     // use passport to manage our sessions
 mongoose.connect("mongodb://localhost:27017/userDB", { useNewUrlParser:true, useUnifiedTopology:true });
 mongoose.set("useCreateIndex", true);       // Depreciation Warning
 
+const littleSec= [];
 const userSchema= new mongoose.Schema({
     email: String,
     password: String,
     googleId: String,
-    secret: String
+    secret: littleSec
 });
 
 userSchema.plugin(passportLocalMongoose); // using passportLocalMongoose as a plugin for userSchema
@@ -122,7 +123,7 @@ app.post("/submit", (req,res) => {
         if(err){
         console.log(err);
         }else{
-        foundItems.secret= userSecret;
+        foundItems.secret.push(userSecret);
         foundItems.save(() => {
         res.redirect("/secrets");
         })
